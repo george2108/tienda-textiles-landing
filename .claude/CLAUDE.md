@@ -34,6 +34,21 @@ You are an expert in TypeScript, Angular, and scalable web application developme
 - Do NOT use `ngStyle`, use `style` bindings instead
 - When using external templates/styles, use paths relative to the component TS file.
 
+## Styling
+
+- Minimize handwritten CSS. Prefer, in this order:
+  1. **Angular Material** components and their theming tokens for anything a
+     Material component already covers (buttons, cards, tables, dialogs, form
+     fields, chips, toolbars, etc.).
+  2. **Tailwind utility classes** in the template for layout, spacing, colors,
+     typography and responsive tweaks.
+  3. A component stylesheet **only** for what utilities/components genuinely
+     cannot express (complex selectors, keyframes, third-party overrides).
+- Do not reach for a `.css` file by default; add Tailwind classes to the
+  template first and only fall back to CSS when necessary.
+- Reuse theme tokens (`--mat-sys-*`, the `--app-*` vars in `theme.scss`) instead
+  of hardcoding colors.
+
 ## State Management
 
 - Use signals for local component state
