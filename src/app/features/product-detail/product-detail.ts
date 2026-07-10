@@ -14,10 +14,11 @@ import { SeoService } from '../../core/seo.service';
 import { Product } from '../../core/catalog.models';
 import { productInquiry, whatsappHref } from '../../core/whatsapp';
 import { environment } from '../../../environments/environment';
+import { ProductGallery } from './product-gallery/product-gallery';
 
 @Component({
   selector: 'app-product-detail',
-  imports: [RouterLink, CurrencyPipe],
+  imports: [RouterLink, CurrencyPipe, ProductGallery],
   templateUrl: './product-detail.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -31,7 +32,6 @@ export class ProductDetail {
   protected readonly settings = this.catalog.settings;
   protected readonly product = signal<Product | null>(null);
   protected readonly notFound = signal(false);
-  protected readonly activeImage = signal<string | null>(null);
 
   protected readonly images = computed(() => {
     const p = this.product();
@@ -56,7 +56,6 @@ export class ProductDetail {
       this.catalog.getProductBySlug(slug).subscribe({
         next: (p) => {
           this.product.set(p);
-          this.activeImage.set(p.imageUrl ?? p.secondaryImageUrls[0] ?? null);
           this.applySeo(p);
         },
         error: () => {
@@ -69,10 +68,6 @@ export class ProductDetail {
         },
       });
     });
-  }
-
-  protected selectImage(url: string): void {
-    this.activeImage.set(url);
   }
 
   private applySeo(p: Product): void {

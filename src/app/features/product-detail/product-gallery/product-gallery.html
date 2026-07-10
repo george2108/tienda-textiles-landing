@@ -1,0 +1,103 @@
+<!-- Inline gallery -->
+<div>
+  <button
+    type="button"
+    (click)="open(activeIndex())"
+    class="group block w-full cursor-zoom-in overflow-hidden rounded-sm bg-white"
+    [attr.aria-label]="'Ampliar imagen de ' + alt()"
+  >
+    @if (activeImage(); as img) {
+      <div class="relative">
+        <img [src]="img" [alt]="alt()"
+          class="aspect-4/5 w-full object-cover transition-transform duration-500 group-hover:scale-[1.03]" />
+        <span class="pointer-events-none absolute bottom-3 right-3 grid h-9 w-9 place-items-center rounded-full bg-ink/55 text-cotton-50 opacity-0 transition-opacity group-hover:opacity-100">
+          <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" />
+            <path d="m20 20-3.5-3.5M11 8v6M8 11h6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </span>
+      </div>
+    } @else {
+      <div class="flex aspect-4/5 items-center justify-center text-ink/20">
+        <span class="font-mono text-xs uppercase tracking-widest">Sin foto</span>
+      </div>
+    }
+  </button>
+
+  @if (count() > 1) {
+    <div class="mt-3 flex flex-wrap gap-3">
+      @for (img of images(); track img; let i = $index) {
+        <button type="button" (click)="select(i)" (mouseenter)="select(i)"
+          class="h-20 w-20 overflow-hidden rounded-sm border-2 transition-colors"
+          [class]="activeIndex() === i ? 'border-indigo' : 'border-transparent hover:border-cotton-200'"
+          [attr.aria-label]="'Ver imagen ' + (i + 1) + ' de ' + alt()"
+          [attr.aria-pressed]="activeIndex() === i">
+          <img [src]="img" alt="" class="h-full w-full object-cover" />
+        </button>
+      }
+    </div>
+  }
+</div>
+
+<!-- Lightbox -->
+@if (lightboxOpen()) {
+  <div class="fixed inset-0 z-70 flex flex-col bg-ink/95 backdrop-blur-sm"
+    role="dialog" aria-modal="true" aria-label="Galería de imágenes del producto">
+    <!-- Top bar -->
+    <div class="flex items-center justify-between px-5 py-4 text-cotton-50">
+      <span class="font-mono text-sm text-cotton-50/70">
+        {{ lightboxIndex() + 1 }} / {{ count() }}
+      </span>
+      <button type="button" (click)="close()" aria-label="Cerrar galería"
+        class="grid h-10 w-10 place-items-center rounded-full text-cotton-50 transition-colors hover:bg-cotton-50/10">
+        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Stage -->
+    <div class="relative flex flex-1 items-center justify-center overflow-hidden px-4 pb-2"
+      (click)="close()"
+      (touchstart)="onTouchStart($event)"
+      (touchend)="onTouchEnd($event)">
+      @if (count() > 1) {
+        <button type="button" (click)="prev(); $event.stopPropagation()" aria-label="Imagen anterior"
+          class="absolute left-3 z-10 grid h-11 w-11 place-items-center rounded-full bg-cotton-50/10 text-cotton-50 transition-colors hover:bg-cotton-50/20 sm:left-6">
+          <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M15 6l-6 6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      }
+
+      @if (lightboxImage(); as img) {
+        <img [src]="img" [alt]="alt()" (click)="$event.stopPropagation()"
+          class="max-h-full max-w-full rounded-sm object-contain" />
+      }
+
+      @if (count() > 1) {
+        <button type="button" (click)="next(); $event.stopPropagation()" aria-label="Imagen siguiente"
+          class="absolute right-3 z-10 grid h-11 w-11 place-items-center rounded-full bg-cotton-50/10 text-cotton-50 transition-colors hover:bg-cotton-50/20 sm:right-6">
+          <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </button>
+      }
+    </div>
+
+    <!-- Thumbnail strip -->
+    @if (count() > 1) {
+      <div class="flex justify-center gap-2 overflow-x-auto px-5 py-5">
+        @for (img of images(); track img; let i = $index) {
+          <button type="button" (click)="goTo(i)"
+            class="h-16 w-16 shrink-0 overflow-hidden rounded-sm border-2 transition-colors"
+            [class]="lightboxIndex() === i ? 'border-cotton-50' : 'border-transparent opacity-60 hover:opacity-100'"
+            [attr.aria-label]="'Ir a la imagen ' + (i + 1)"
+            [attr.aria-pressed]="lightboxIndex() === i">
+            <img [src]="img" alt="" class="h-full w-full object-cover" />
+          </button>
+        }
+      </div>
+    }
+  </div>
+}
