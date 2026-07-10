@@ -11,7 +11,7 @@
   --color-cotton-200: #e0dccf; /* deeper cotton — hairlines/edges */
   --color-cotton-50: #f3f1ea;  /* lightest cotton — raised cards on indigo */
 
-  --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
   --font-body: 'Hanken Grotesk', system-ui, -apple-system, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 }
@@ -29,9 +29,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
-/* Instrument Serif reads better a touch tighter at display sizes */
+/* Space Grotesk display: medium weight + tight tracking at large sizes */
 .font-display {
-  letter-spacing: -0.01em;
+  font-weight: 500;
+  letter-spacing: -0.02em;
 }
 
 /* Warp threads: fine vertical lines evoking cloth on the loom. */
