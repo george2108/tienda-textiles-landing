@@ -1,0 +1,190 @@
+<!-- HERO -->
+<section class="relative overflow-hidden bg-indigo text-cotton-50">
+  <!-- Background photo -->
+  <img src="/hero.jpeg" alt="" aria-hidden="true"
+    class="absolute inset-0 h-full w-full object-cover object-center" />
+  <!-- Indigo scrim: uniform brand wash + a left-to-right gradient so the text
+       sits on near-solid indigo while the photo shows through on the right. -->
+  <div class="absolute inset-0 bg-indigo/20" aria-hidden="true"></div>
+  <div class="absolute inset-0 bg-linear-to-r from-indigo/90 via-indigo/40 to-transparent" aria-hidden="true"></div>
+  <div class="absolute inset-0 bg-linear-to-t from-indigo/60 to-transparent" aria-hidden="true"></div>
+  <div class="warp pointer-events-none absolute inset-0" aria-hidden="true"></div>
+
+  <div class="relative z-10 mx-auto flex min-h-[78vh] max-w-6xl flex-col justify-center px-5 py-20 sm:min-h-[80vh] sm:px-8">
+    <p class="rise rise-1 font-mono text-[0.7rem] uppercase tracking-[0.3em] text-cotton-50/75">
+      Catálogo · teñido a mano
+    </p>
+    <h1 class="rise rise-2 mt-4 font-display text-5xl leading-[1.02] sm:text-7xl [text-shadow:0_2px_28px_rgba(9,14,34,0.55)]">
+      Añil, grana<br />y algodón crudo.
+    </h1>
+    @if (storeDescription()) {
+      <p class="rise rise-3 mt-6 max-w-xl text-lg leading-relaxed text-cotton-50/90 [text-shadow:0_1px_16px_rgba(9,14,34,0.5)]">
+        {{ storeDescription() }}
+      </p>
+    }
+
+    <div class="rise rise-3 mt-9 max-w-xl">
+      <label for="buscar" class="sr-only">Buscar productos</label>
+      <div class="flex items-center gap-3 rounded-full bg-cotton-50 px-5 py-3.5 text-ink shadow-lg shadow-indigo/20">
+        <svg class="h-5 w-5 shrink-0 text-ink/40" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" />
+          <path d="m20 20-3.5-3.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+        <input
+          id="buscar"
+          type="search"
+          [value]="search()"
+          (input)="onSearch($event)"
+          placeholder="Busca por nombre o material…"
+          class="w-full bg-transparent text-base outline-none placeholder:text-ink/40"
+        />
+      </div>
+    </div>
+  </div>
+  <div class="absolute inset-x-0 bottom-0 z-10 h-px bg-cochineal/70" aria-hidden="true"></div>
+</section>
+
+<!-- CATALOG CONTROLS -->
+<section class="mx-auto max-w-6xl px-5 pt-12 sm:px-8">
+  <div class="flex flex-wrap items-center gap-2" role="group" aria-label="Filtrar por categoría">
+    <button
+      type="button"
+      (click)="selectCategory(null)"
+      class="rounded-full px-4 py-1.5 font-mono text-xs uppercase tracking-wider transition-colors"
+      [class]="selectedCategoryId() === null
+        ? 'bg-indigo text-cotton-50'
+        : 'border border-cotton-200 text-ink/70 hover:border-indigo hover:text-indigo'"
+    >
+      Todo
+    </button>
+    @for (cat of categories(); track cat.id) {
+      <button
+        type="button"
+        (click)="selectCategory(cat.id)"
+        class="rounded-full px-4 py-1.5 font-mono text-xs uppercase tracking-wider transition-colors"
+        [class]="selectedCategoryId() === cat.id
+          ? 'bg-indigo text-cotton-50'
+          : 'border border-cotton-200 text-ink/70 hover:border-indigo hover:text-indigo'"
+      >
+        {{ cat.nombre }}
+      </button>
+    }
+  </div>
+  <p class="mt-5 font-mono text-xs text-ink/45">
+    {{ filtered().length }} {{ filtered().length === 1 ? 'pieza' : 'piezas' }}
+  </p>
+</section>
+
+<!-- PRODUCT GRID -->
+<section class="mx-auto max-w-6xl px-5 pb-6 pt-8 sm:px-8">
+  @if (!loading() && filtered().length === 0) {
+    <div class="rounded-sm border border-dashed border-cotton-200 px-6 py-20 text-center">
+      <p class="font-display text-3xl text-ink">Sin resultados en el telar</p>
+      <p class="mx-auto mt-2 max-w-sm text-ink/60">
+        No encontramos piezas para esa búsqueda. Prueba con otro material o categoría.
+      </p>
+    </div>
+  } @else {
+    <ul class="grid grid-cols-2 gap-x-5 gap-y-10 sm:grid-cols-3 lg:grid-cols-4">
+      @for (p of filtered(); track p.id) {
+        <li>
+          <a [routerLink]="['/producto', p.slug]" class="group block">
+            <div class="relative overflow-hidden rounded-sm bg-white">
+              <div class="aspect-4/5 overflow-hidden">
+                @if (p.imageUrl) {
+                  <img
+                    [src]="p.imageUrl"
+                    [alt]="p.nombre"
+                    loading="lazy"
+                    class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                } @else {
+                  <div class="flex h-full items-center justify-center text-ink/20">
+                    <span class="font-mono text-xs uppercase tracking-widest">Sin foto</span>
+                  </div>
+                }
+              </div>
+              @if (p.destacado) {
+                <span class="absolute left-3 top-3 rounded-sm bg-cochineal px-2 py-0.5 font-mono text-[0.6rem] uppercase tracking-widest text-cotton-50">
+                  Destacada
+                </span>
+              }
+            </div>
+
+            <div class="border-t border-dashed border-cotton-200 pt-3">
+              @if (p.categories[0]) {
+                <p class="font-mono text-[0.62rem] uppercase tracking-[0.18em] text-indigo">
+                  {{ p.categories[0].nombre }}
+                </p>
+              }
+              <h3 class="mt-1 font-display text-xl leading-tight text-ink group-hover:text-azulon">
+                {{ p.nombre }}
+              </h3>
+              <p class="mt-1.5 font-mono text-sm">
+                @if (p.precioDescuento != null) {
+                  <span class="font-semibold text-cochineal">{{ p.precioDescuento | currency: 'MXN' : 'symbol-narrow' : '1.0-0' }}</span>
+                  <span class="ml-2 text-ink/40 line-through">{{ p.precio | currency: 'MXN' : 'symbol-narrow' : '1.0-0' }}</span>
+                } @else {
+                  <span class="text-ink">{{ p.precio | currency: 'MXN' : 'symbol-narrow' : '1.0-0' }}</span>
+                }
+              </p>
+            </div>
+          </a>
+        </li>
+      }
+    </ul>
+  }
+</section>
+
+<!-- STORE SECTION -->
+<section id="tienda" class="mt-20 border-t border-cotton-200 bg-cotton-50">
+  <div class="mx-auto grid max-w-6xl gap-12 px-5 py-16 sm:px-8 md:grid-cols-2 md:items-center">
+    <div>
+      <p class="font-mono text-[0.7rem] uppercase tracking-[0.3em] text-cochineal">La tienda</p>
+      <h2 class="mt-3 font-display text-4xl leading-tight text-ink sm:text-5xl">
+        {{ settings()?.nombre || 'Tienda Textiles' }}
+      </h2>
+      @if (storeDescription()) {
+        <p class="mt-5 max-w-md leading-relaxed text-ink/70">{{ storeDescription() }}</p>
+      }
+      @if (settings()?.direccion; as dir) {
+        <p class="mt-6 flex items-start gap-2 text-ink/80">
+          <span class="mt-0.5 text-cochineal" aria-hidden="true">◈</span>
+          <span>{{ dir }}</span>
+        </p>
+      }
+      @if (storeWhatsapp(); as href) {
+        <a
+          [href]="href"
+          target="_blank"
+          rel="noopener"
+          class="mt-7 inline-flex items-center gap-2.5 rounded-full bg-indigo px-6 py-3 text-cotton-50 transition-colors hover:bg-azulon"
+        >
+          <svg class="h-5 w-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.75.46 3.45 1.32 4.95L2 22l5.25-1.38a9.9 9.9 0 0 0 4.79 1.22h.01c5.46 0 9.9-4.45 9.9-9.91 0-2.65-1.03-5.14-2.9-7.01A9.82 9.82 0 0 0 12.04 2Zm5.8 14.2c-.25.7-1.44 1.33-1.99 1.36-.53.05-.53.42-3.33-.7-2.8-1.11-4.55-3.98-4.69-4.17-.14-.19-1.12-1.48-1.12-2.82 0-1.34.7-2 .95-2.28.25-.28.54-.35.72-.35.18 0 .36 0 .52.01.17.01.4-.06.62.48.25.6.83 2.07.9 2.22.07.15.12.32.02.51-.1.19-.15.31-.29.48-.14.17-.3.38-.43.51-.14.14-.29.29-.12.57.17.28.74 1.22 1.59 1.98 1.1.98 2.02 1.29 2.3 1.43.28.14.44.12.6-.07.17-.19.7-.81.89-1.09.18-.28.37-.23.62-.14.25.09 1.6.76 1.87.9.28.14.46.21.53.32.07.11.07.65-.18 1.35Z" />
+          </svg>
+          Escríbenos por WhatsApp
+        </a>
+      }
+    </div>
+
+    @if (settings()?.imageUrl || (settings()?.secondaryImageUrls?.length)) {
+      <div>
+        @if (settings()?.imageUrl; as img) {
+          <div class="overflow-hidden rounded-sm bg-white">
+            <img [src]="img" [alt]="'Interior de ' + (settings()?.nombre || 'la tienda')"
+              class="aspect-4/3 w-full object-cover" />
+          </div>
+        }
+        @if (settings()?.secondaryImageUrls?.length) {
+          <div class="mt-3 grid grid-cols-3 gap-3">
+            @for (img of settings()!.secondaryImageUrls; track img) {
+              <img [src]="img" alt="Foto de la tienda"
+                class="aspect-square w-full rounded-sm object-cover" loading="lazy" />
+            }
+          </div>
+        }
+      </div>
+    }
+  </div>
+</section>

@@ -1,3 +1,74 @@
-/* You can add global styles to this file, and also import other style files */
-
 @import 'tailwindcss';
+
+/* -------- Design tokens (indigo/añil + grana/cochineal on undyed cotton) -------- */
+@theme {
+  --color-ink: #17213b;        /* deep indigo-black — body text */
+  --color-indigo: #1b2a52;     /* dye-vat indigo — large fields */
+  --color-indigo-700: #26386b; /* lifted indigo */
+  --color-azulon: #4256c9;     /* bright interactive/hover */
+  --color-cochineal: #9e2b4e;  /* grana — crimson accent, used sparingly */
+  --color-cotton: #eae7df;     /* undyed cotton — page ground */
+  --color-cotton-200: #e0dccf; /* deeper cotton — hairlines/edges */
+  --color-cotton-50: #f3f1ea;  /* lightest cotton — raised cards on indigo */
+
+  --font-display: 'Instrument Serif', Georgia, 'Times New Roman', serif;
+  --font-body: 'Hanken Grotesk', system-ui, -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-cotton);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Instrument Serif reads better a touch tighter at display sizes */
+.font-display {
+  letter-spacing: -0.01em;
+}
+
+/* Warp threads: fine vertical lines evoking cloth on the loom. */
+.warp {
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(243, 241, 234, 0.06) 0px,
+    rgba(243, 241, 234, 0.06) 1px,
+    transparent 1px,
+    transparent 9px
+  );
+}
+
+/* Visible keyboard focus everywhere. */
+:focus-visible {
+  outline: 2px solid var(--color-azulon);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Entrance motion — disabled when the visitor prefers reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes rise {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .rise { animation: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+  .rise-1 { animation-delay: 0.05s; }
+  .rise-2 { animation-delay: 0.14s; }
+  .rise-3 { animation-delay: 0.23s; }
+
+  @keyframes reveal {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0;
+    animation: reveal 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) forwards;
+  }
+}
