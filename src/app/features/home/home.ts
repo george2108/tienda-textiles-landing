@@ -36,6 +36,10 @@ export class Home {
     () => this.settings()?.descripcion ?? '',
   );
 
+  protected readonly heroTitulo = computed(
+    () => this.settings()?.heroTitulo || 'Añil, grana y algodón crudo.',
+  );
+
   protected readonly filtered = computed(() => {
     const term = this.search().trim().toLowerCase();
     const catId = this.selectedCategoryId();

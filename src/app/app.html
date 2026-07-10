@@ -2,11 +2,8 @@
   class="sticky top-0 z-40 border-b border-cotton-200 bg-cotton/85 backdrop-blur-md"
 >
   <div class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3.5 sm:px-8">
-    <a routerLink="/" class="group flex items-baseline gap-2.5" aria-label="Inicio">
+    <a routerLink="/" class="flex items-baseline gap-2.5" aria-label="Inicio">
       <span class="font-display text-2xl leading-none text-ink">{{ storeName() }}</span>
-      <span class="hidden font-mono text-[0.6rem] uppercase tracking-[0.25em] text-cochineal sm:inline">
-        añil · grana
-      </span>
     </a>
 
     @if (contactHref(); as href) {

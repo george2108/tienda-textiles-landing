@@ -37,6 +37,7 @@ export interface RedesSociales {
 export interface StoreSettings {
   nombre: string | null;
   descripcion: string | null;
+  heroTitulo: string | null;
   whatsapp: string | null;
   direccion: string | null;
   mapsUrl: string | null;
