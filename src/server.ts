@@ -10,7 +10,12 @@ import { join } from 'node:path';
 const browserDistFolder = join(import.meta.dirname, '../browser');
 
 const app = express();
-const angularApp = new AngularNodeAppEngine();
+
+// SSR host allowlist (anti host-header/SSRF). This app only builds URLs from
+// `environment.*`, never from the request host, so allowing any host by default
+// is safe. Lock it down in production by setting NG_ALLOWED_HOSTS (comma-separated,
+// e.g. "www.tudominio.com,tudominio.com") — that env var takes precedence.
+const angularApp = new AngularNodeAppEngine({ allowedHosts: ['*'] });
 
 /**
  * Example Express Rest API endpoints can be defined here.
