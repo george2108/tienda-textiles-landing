@@ -3,6 +3,6 @@
 // fileReplacements in angular.json).
 export const environment = {
   production: true,
-  apiUrl: 'https://api.tudominio.com/api',
-  siteUrl: 'https://www.tudominio.com',
+  apiUrl: 'https://admintextilesjalieza.jvcv.com.mx/api',
+  siteUrl: 'https://textilesjalieza.jvcv.com.mx',
 };
