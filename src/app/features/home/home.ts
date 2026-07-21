@@ -32,12 +32,18 @@ export class Home {
   protected readonly search = signal('');
   protected readonly selectedCategoryId = signal<number | null>(null);
 
+  protected readonly storeName = computed(
+    () => this.settings()?.nombre || 'Textiles jalieza',
+  );
+
   protected readonly storeDescription = computed(
-    () => this.settings()?.descripcion ?? '',
+    () =>
+      this.settings()?.descripcion ||
+      'Descubre artesanías únicas elaboradas con tradición, calidad y el alma de nuestra gente.',
   );
 
   protected readonly heroTitulo = computed(
-    () => this.settings()?.heroTitulo || 'Añil, grana y algodón crudo.',
+    () => this.settings()?.heroTitulo || 'lo tiene todo',
   );
 
   protected readonly filtered = computed(() => {

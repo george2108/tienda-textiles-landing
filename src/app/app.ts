@@ -16,7 +16,7 @@ export class App {
   protected readonly year = new Date().getFullYear();
 
   protected readonly storeName = computed(
-    () => this.settings()?.nombre || 'Tienda Textiles',
+    () => this.settings()?.nombre || 'Textiles jalieza',
   );
 
   protected readonly socials = computed(() => {

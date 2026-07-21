@@ -11,7 +11,11 @@
   --color-cotton-200: #e0dccf; /* deeper cotton — hairlines/edges */
   --color-cotton-50: #f3f1ea;  /* lightest cotton — raised cards on indigo */
 
+  --color-oro: #b8933f;        /* artisan gold — hero accent */
+  --color-lino: #f4efe3;       /* warm linen — hero ground */
+
   --font-display: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
   --font-body: 'Hanken Grotesk', system-ui, -apple-system, sans-serif;
   --font-mono: 'IBM Plex Mono', ui-monospace, monospace;
 }
@@ -33,6 +37,13 @@ body {
 .font-display {
   font-weight: 500;
   letter-spacing: -0.02em;
+}
+
+/* Woven diamond motif — a faint gold lattice for the linen hero. */
+.lattice {
+  background-image:
+    repeating-linear-gradient(45deg, rgba(184, 147, 63, 0.06) 0 1px, transparent 1px 24px),
+    repeating-linear-gradient(-45deg, rgba(184, 147, 63, 0.06) 0 1px, transparent 1px 24px);
 }
 
 /* Warp threads: fine vertical lines evoking cloth on the loom. */
