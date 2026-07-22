@@ -68,7 +68,7 @@ export class Home {
 
   constructor() {
     this.seo.update({
-      title: 'Tienda Textiles · Catálogo de telas y textiles hechos a mano',
+      title: 'Textiles Jalieza · Catálogo de telas y textiles hechos a mano',
       description:
         'Explora telas y textiles hechos a mano. Filtra por categoría, busca por material y pide informes por WhatsApp.',
       url: environment.siteUrl,
@@ -94,7 +94,7 @@ export class Home {
       this.seo.setJsonLd('store', {
         '@context': 'https://schema.org',
         '@type': 'Store',
-        name: s.nombre ?? 'Tienda Textiles',
+        name: s.nombre ?? 'Textiles jalieza',
         description: s.descripcion ?? undefined,
         image: s.imageUrl ?? undefined,
         telephone: s.whatsapp ?? undefined,

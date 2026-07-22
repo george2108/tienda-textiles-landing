@@ -61,7 +61,7 @@ export class ProductDetail {
         error: () => {
           this.notFound.set(true);
           this.seo.update({
-            title: 'Producto no encontrado · Tienda Textiles',
+            title: 'Producto no encontrado · Textiles Jalieza',
             description: 'Este producto ya no está disponible en el catálogo.',
             url: `${environment.siteUrl}/producto/${slug}`,
           });
@@ -75,10 +75,10 @@ export class ProductDetail {
     const price = p.precioDescuento ?? p.precio;
     const description =
       p.descripcion?.trim() ||
-      `${p.nombre} — textil disponible en Tienda Textiles. Pide informes por WhatsApp.`;
+      `${p.nombre} — textil disponible en Textiles Jalieza. Pide informes por WhatsApp.`;
 
     this.seo.update({
-      title: `${p.nombre} · Tienda Textiles`,
+      title: `${p.nombre} · Textiles Jalieza`,
       description,
       url,
       image: p.imageUrl,
@@ -93,7 +93,7 @@ export class ProductDetail {
       image: this.images(),
       sku: p.sku ?? undefined,
       category: p.categories.map((c) => c.nombre).join(', ') || undefined,
-      brand: { '@type': 'Brand', name: this.settings()?.nombre ?? 'Tienda Textiles' },
+      brand: { '@type': 'Brand', name: this.settings()?.nombre ?? 'Textiles Jalieza' },
       offers: {
         '@type': 'Offer',
         price,
