@@ -68,9 +68,9 @@ export class Home {
 
   constructor() {
     this.seo.update({
-      title: 'Tienda Textiles · Catálogo de telas y textiles teñidos a mano',
+      title: 'Tienda Textiles · Catálogo de telas y textiles hechos a mano',
       description:
-        'Explora telas y textiles teñidos a mano con añil y grana. Filtra por categoría, busca por material y pide informes por WhatsApp.',
+        'Explora telas y textiles hechos a mano. Filtra por categoría, busca por material y pide informes por WhatsApp.',
       url: environment.siteUrl,
     });
 
