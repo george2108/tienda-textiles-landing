@@ -2,7 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { Category, Product, StoreSettings } from './catalog.models';
+import { Category, Paginated, Product, StoreSettings } from './catalog.models';
 
 @Injectable({ providedIn: 'root' })
 export class CatalogService {
@@ -23,7 +23,12 @@ export class CatalogService {
     return this.http.get<Category[]>(`${this.baseUrl}/categories`);
   }
 
-  getProducts(opts?: { categoryId?: number; search?: string }): Observable<Product[]> {
+  getProducts(opts?: {
+    categoryId?: number;
+    search?: string;
+    page?: number;
+    limit?: number;
+  }): Observable<Paginated<Product>> {
     let params = new HttpParams();
     if (opts?.categoryId) {
       params = params.set('categoryId', opts.categoryId);
@@ -31,7 +36,13 @@ export class CatalogService {
     if (opts?.search) {
       params = params.set('search', opts.search);
     }
-    return this.http.get<Product[]>(`${this.baseUrl}/products`, { params });
+    if (opts?.page) {
+      params = params.set('page', opts.page);
+    }
+    if (opts?.limit) {
+      params = params.set('limit', opts.limit);
+    }
+    return this.http.get<Paginated<Product>>(`${this.baseUrl}/products`, { params });
   }
 
   getProductBySlug(slug: string): Observable<Product> {
